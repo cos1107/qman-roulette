@@ -80,6 +80,70 @@
             border: 4px solid #d4af37;
             position: absolute;
         }
+
+        /* Firecracker swing animation */
+        @keyframes firecracker-swing {
+            0%, 100% { transform: rotate(-3deg) translateY(0); }
+            25% { transform: rotate(2deg) translateY(-5px); }
+            50% { transform: rotate(-2deg) translateY(0); }
+            75% { transform: rotate(3deg) translateY(-3px); }
+        }
+
+        /* Spark burst animation */
+        @keyframes spark-burst {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+
+        /* Winner photo pulsing border */
+        @keyframes winner-border {
+            0%, 100% {
+                box-shadow: 0 0 20px #FFD700, 0 0 40px #FF6B00, 0 0 60px #FFD700;
+                transform: rotate(0deg);
+            }
+            25% {
+                box-shadow: 0 0 30px #FF6B00, 0 0 50px #FFD700, 0 0 70px #FF6B00;
+            }
+            50% {
+                box-shadow: 0 0 25px #FFD700, 0 0 45px #FF6B00, 0 0 65px #FFD700;
+                transform: rotate(180deg);
+            }
+            75% {
+                box-shadow: 0 0 35px #FF6B00, 0 0 55px #FFD700, 0 0 75px #FF6B00;
+            }
+        }
+        .animate-winner-border {
+            animation: winner-border 2s linear infinite;
+        }
+
+        /* Winner photo pulse */
+        @keyframes winner-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 0 0 15px rgba(255, 215, 0, 0);
+            }
+        }
+        .animate-winner-pulse {
+            animation: winner-pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Winner text glow */
+        @keyframes winner-glow {
+            0%, 100% {
+                text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FF6B00;
+            }
+            50% {
+                text-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 60px #FF6B00;
+            }
+        }
+        .animate-winner-glow {
+            animation: winner-glow 1s ease-in-out infinite;
+        }
     </style>
 <script type="importmap">
 {
