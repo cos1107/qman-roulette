@@ -1,0 +1,67 @@
+
+========================
+Phase 1：規格輸出
+========================
+
+1) Assumptions（合理假設）
+- 用戶上傳的照片主體明確，Canvas 模擬 AI 裁切將以圖片中心為基準點進行智慧縮放。
+- CSV 檔案採 UTF-8 編碼，若遇亂碼則提示用戶檢查編碼。
+- 輪盤選項上限為 12 個，以維持視覺美感與獎項間隔的可讀性。
+- 用戶端瀏覽器支援 HTML5 Canvas 與 CSS 3D 動畫。
+
+2) IA（頁面與導覽結構）
+- 主入口 (Home)：品牌視覺、進入按鈕。
+- 設定中心 (Setup)：輪盤名稱、獎項管理（增刪改）、匯入按鈕。
+- 核心編輯 (Editor)：
+  - CSV 匯入 Modal
+  - 照片上傳/處理 Modal
+- 抽獎場景 (Stage)：輪盤主體、旋轉按鈕、投影模式切換。
+- 結果揭曉 (Result Overlay)：中獎展示、動畫效果。
+
+3) User Flow
+- [CSV 路徑]：點擊匯入 -> 選擇/拖入 CSV -> 解析並選擇欄位 -> 自動生成文字獎項。
+- [照片路徑]：點擊照片匯入 -> 批次上傳 -> Canvas 自動進行 Q 版化加工 (圓形裁切、金邊、福標) -> 生成圖片獎項。
+
+4) Functional Spec
+- Home：動態背景（燈籠、煙火 SVG）、大型「立即開運」按鈕。
+- Create Wheel：支援即時編輯名稱與獎項排序。
+- Prize Setup：類型切換（文字/圖片），圖片自動處理為 1:1 圓形。
+- Wheel Config：旋轉時間設為 4-6 秒隨機，結束時鎖定畫面。
+- Preview：設定頁面側邊提供即時 Mini-Wheel 預覽。
+- Spin：平滑加速、音效同步、最終指向指針中心。
+- Result：全螢幕煙火 (CSS Particulates)、大字報、隨機吉祥話（如：大吉大利、財源廣進）。
+
+5) CSV Import Spec
+- 支援 .csv 格式。
+- 第一欄位預設為獎項內容，用戶可手動選擇其它欄位。
+- 超過 12 筆時，自動隨機抽取 12 筆，並顯示「已為您隨機選取 12 位幸運兒」提示。
+
+6) Photo-to-Sticker Spec
+- 模型提示詞 (Mock Context)："Generate a cute CNY style sticker, circular crop, golden border 3px, high contrast."
+- 輸入：原始圖片 Base64；輸出：帶金邊與透明背景的圓形 PNG。
+- 「福」字角標：位於右下角 45 度，金色圓底紅字。
+
+7) Data Model
+- Wheel: { id: string, name: string, options: Option[] }
+- Option: { id: string, type: 'text'|'image', content: string (text or base64), weight: number }
+
+8) UI Style Guide
+- 色系：#D90429 (大紅), #FFD700 (金), #FFFFFF (潔白), #000000 (墨黑)。
+- 字體：標題用 ZCOOL KuaiLe，內文用 Quicksand。
+- 動畫：彈跳 (Bounce) 與 緩入緩出 (Cubic-bezier)。
+
+9) Edge Cases
+- 只有 1 個獎項時禁用旋轉。
+- CSV 為空或格式錯誤的報錯。
+- 圖片檔案過大導致的載入延遲處理。
+- 旋轉中途重新調整視窗大小的輪盤重繪。
+- 重複上傳相同名稱的獎項。
+- ... (其餘詳見程式碼內部處理邏輯)。
+
+10) Acceptance Criteria
+- 從進入首頁到完成輪盤不超過 180 秒。
+- 支援 F11 全螢幕投影，文字與圖片在大螢幕清晰可見。
+
+11) Tech Notes
+- 使用 SVG 繪製輪盤扇區，確保在任何縮放比例下不失真。
+- 隨機演算法：`Math.random() * options.length` 預先決定 index。

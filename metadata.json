@@ -1,0 +1,8 @@
+
+{
+  "name": "新春Q版輪盤製作網站",
+  "description": "一個充滿節慶氛圍的農曆新年輪盤製作工具，支援 CSV 匯入、照片 AI 貼紙化，並可安裝為 Android Web App。",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
